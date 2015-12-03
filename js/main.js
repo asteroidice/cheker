@@ -17,7 +17,7 @@ function init() {
       update(snapshot.key())
     });
     $("#" + snapshot.key() + "Del").click(function() {
-      delete(snapshot.key());
+      deleteCheck(snapshot.key());
     });
 
 
@@ -39,8 +39,8 @@ init();
 }*/
 
 function deleteCheck(id) {
-  ref.child(id).set();
-  $("#"+ id).remove();
+  ref.child(id).set({});
+  $("#"+ id).parent().remove();
 }
 
 function update(id) {
