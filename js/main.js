@@ -11,7 +11,7 @@ function init() {
   // Retrieve new posts as they are added to our database
   ref.on("child_added", function(snapshot, prevChildKey) {
     var newPost = snapshot.val();
-    $('#checklist').append('<h6><input id=' + snapshot.key() + ' type="checkbox"><label class="Checklist" for=' + snapshot.key() + '>' + newPost.des + '</label><button id="'+ snapshot.key() + 'Del" style="color:red;display:none;">delete</button></h6>');
+    $('#checklist').append('<h6><input id=' + snapshot.key() + ' type="checkbox"><label class="Checklist" for=' + snapshot.key() + '>' + newPost.des + '</label><button id="'+ snapshot.key() + 'Edit" style="color:grey;display:none;">edit</button>  <button id="'+ snapshot.key() + 'Del" style="color:red;display:none;">delete</button></h6>');
     document.getElementById("" + snapshot.key()).checked = newPost.check;
     $("#" + snapshot.key()).click(function() {
       update(snapshot.key())
@@ -19,12 +19,15 @@ function init() {
     $("#" + snapshot.key() + "Del").click(function() {
       deleteCheck(snapshot.key());
     });
+    $("#" + snapshot.key() + "Edit").click(function() {
+      editChek(snapshot.key());
+    });
     $("#" + snapshot.key()).parent().hover(
       function () {
-        $("#" + snapshot.key() + "Del").show();
+        $("#" + snapshot.key() + "Del,#" + snapshot.key() + "Edit").show();
       },
       function () {
-        $("#" + snapshot.key() + "Del").hide();
+        $("#" + snapshot.key() + "Del,#" + snapshot.key() + "Edit").hide();
       }
     );
 
@@ -61,6 +64,13 @@ function update(id) {
       check: false
     });
   }
+}
+
+function editChek(id) {
+  var content = $("#"+id).parent().children(".Checklist").html();
+  $("#"+id).parent().children(".Checklist").hide().after("<input type='text'></input><button>done</button>  ");
+  $("#"+id).parent().children(".Edit").hide()
+  $("#"+id).parent().children("input").val(content);
 }
 
 function add() {
